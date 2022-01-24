@@ -1,7 +1,9 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateStructAdapter } from '@ng-bootstrap/ng-bootstrap/datepicker/adapters/ngb-date-adapter';
+import { catchError, finalize, throwError } from 'rxjs';
 import { CreateBooking } from 'src/app/interfaces/create-booking.interface';
 import { BookingsService } from 'src/app/services/bookings.service';
 import { countriesWithAlphaCode } from 'src/shared/constants/countries-with-alpha-code';
@@ -15,15 +17,24 @@ import { CountriesWithAlphaCode } from 'src/shared/interfaces/countries-with-alp
 export class BookingComponent implements OnInit {
   countries: CountriesWithAlphaCode[] = countriesWithAlphaCode;
   isLoading = false;
+  successMessage = '';
+  errorMessage = '';
+  // TODO: Just a quick fix for a while to reset calendar dates after booking is created.
+  arrivalDate = null;
+  departureDate = null;
   bookingForm = this.fb.group({
     arrival: [null, Validators.required],
     departure: [null, Validators.required],
     adults: [0, [Validators.min(1), Validators.max(15)]],
+
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     address: ['', Validators.required],
     countryCode: ['', Validators.required],
-    postalCode: ['', Validators.required],
+    postalCode: [
+      '',
+      [Validators.required, Validators.minLength(4), Validators.maxLength(20)],
+    ],
     city: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phoneNumber: ['', Validators.required],
@@ -32,11 +43,15 @@ export class BookingComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private bookingsService: BookingsService
-  ) {
-    console.log(this.countries[0]);
-  }
+  ) {}
 
   ngOnInit(): void {}
+
+  resetForm() {
+    this.bookingForm.reset();
+    this.arrivalDate = null;
+    this.departureDate = null;
+  }
 
   get adults() {
     return this.bookingForm.get('adults');
@@ -78,11 +93,9 @@ export class BookingComponent implements OnInit {
   }
 
   changeCountry(e: any) {
-    console.log('target', e.target.value);
     this.countryCode?.setValue(e.target.value, {
       onlySelf: true,
     });
-    console.log(this.countryCode?.value);
   }
 
   createBooking() {
@@ -104,11 +117,23 @@ export class BookingComponent implements OnInit {
       arrival: this.getFormattedDate(this.arrival?.value),
       departure: this.getFormattedDate(this.departure?.value),
     };
-    console.log(dto);
 
-    this.bookingsService.createBooking(dto).subscribe((booking) => {
-      console.log(booking);
-    });
+    this.bookingsService
+      .createBooking(dto)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => {
+          this.successMessage = 'Booking created';
+          this.resetForm();
+        },
+        error: (err) => {
+          if (err.statusCode === HttpStatusCode.Conflict) {
+            this.errorMessage = err.message;
+          } else {
+            this.errorMessage = 'Something went wrong!'; // TODO: Proper handle error scenerios
+          }
+        },
+      });
   }
 
   private getFormattedDate(date: NgbDateStruct): string {

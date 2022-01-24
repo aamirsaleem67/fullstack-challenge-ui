@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +17,13 @@ export class HttpService {
   }
 
   post<T>(apiRoute: string, body: T) {
-    return this.http.post(`${this.url + apiRoute}`, body, {
-      headers: this.getHttpHeaders(),
-    });
+    return this.http
+      .post(`${this.url + apiRoute}`, body, {
+        headers: this.getHttpHeaders(),
+      })
+      .pipe(
+        catchError((err: HttpErrorResponse) => throwError(() => err.error))
+      );
   }
 
   get(apiRoute: string) {

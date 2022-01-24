@@ -263,5 +263,3 @@ export const countriesWithAlphaCode: CountriesWithAlphaCode[] = Object.keys(
     name: codes[code],
   };
 });
-
-console.log(countriesWithAlphaCode[0]);

@@ -1,221 +1,322 @@
-<div class="col-lg-12">
-  <div class="row">
-    <div class="col-12">
-      <form [formGroup]="bookingForm" (ngSubmit)="createBooking()">
-        <app-datepicker-range [parentForm]="bookingForm"></app-datepicker-range>
-        <div class="form-group">
-          <label for="guestsInput">Number of guests *</label>
-          <input
-            type="number"
-            min="1"
-            max="15"
-            class="form-control"
-            id="guestsInput"
-            aria-describedby="emailHelp"
-            placeholder="First Name"
-            formControlName="adults"
-            [ngClass]="{
-              invalid: adults?.invalid && adults?.touched && adults?.dirty
-            }"
-          />
-          <p
-            *ngIf="firstName?.invalid && firstName?.touched && firstName?.dirty"
-            class="error-message"
+<div class="book-form">
+  <div class="col-lg-12">
+    <Header class="title">
+      <h1>Book your suite at limehome</h1>
+    </Header>
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="bookingForm" (ngSubmit)="createBooking()">
+          <div class="row">
+            <div class="col">
+              <label>&nbsp;</label>
+              <app-datepicker-range
+                [parentForm]="bookingForm"
+              ></app-datepicker-range>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="guestsInput">Number of guests *</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="15"
+                  class="form-control"
+                  id="guestsInput"
+                  placeholder="Guests"
+                  formControlName="adults"
+                  [ngClass]="{
+                    invalid: adults?.invalid && adults?.touched && adults?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="
+                    firstName?.invalid && firstName?.touched && firstName?.dirty
+                  "
+                  class="error-message"
+                >
+                  Required field
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="firstNameInput">First Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstNameInput"
+                  placeholder="First Name"
+                  formControlName="firstName"
+                  [ngClass]="{
+                    invalid:
+                      firstName?.invalid &&
+                      firstName?.touched &&
+                      firstName?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="
+                    firstName?.invalid && firstName?.touched && firstName?.dirty
+                  "
+                  class="error-message"
+                >
+                  Required field
+                </p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="lastNameInput">Last Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastNameInput"
+                  placeholder="Last Name"
+                  formControlName="lastName"
+                  [ngClass]="{
+                    invalid:
+                      lastName?.invalid && lastName?.touched && lastName?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="
+                    lastName?.invalid && lastName?.touched && lastName?.dirty
+                  "
+                  class="error-message"
+                >
+                  Required field
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="addressInput">Billing Address *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="addressInput"
+                  placeholder="Billing Address"
+                  formControlName="address"
+                  [ngClass]="{
+                    invalid:
+                      address?.invalid && address?.touched && address?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="address?.invalid && address?.touched && address?.dirty"
+                  class="error-message"
+                >
+                  Required field
+                </p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Country *</label>
+                <select
+                  class="form-control"
+                  aria-label="Country *"
+                  formControlName="countryCode"
+                  (change)="changeCountry($event)"
+                >
+                  <option value="" disabled>Select Country</option>
+                  <option
+                    *ngFor="let country of countries"
+                    [value]="country.code"
+                  >
+                    {{ country.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="postalInput">Postal Code *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postalInput"
+                  placeholder="Postal Code"
+                  formControlName="postalCode"
+                  [ngClass]="{
+                    invalid:
+                      postalCode?.invalid &&
+                      postalCode?.touched &&
+                      postalCode?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="
+                    postalCode?.invalid &&
+                    postalCode?.touched &&
+                    postalCode?.dirty &&
+                    !postalCode?.value
+                  "
+                  class="error-message"
+                >
+                  Required field
+                </p>
+                <p
+                  *ngIf="
+                postalCode?.invalid &&
+                postalCode?.touched &&
+                postalCode?.dirty &&
+                (postalCode?.errors?.['minlength'] || postalCode?.errors?.['maxlength'])
+              "
+                  class="error-message"
+                >
+                  Invalid postal code
+                </p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="cityInput">City *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cityInput"
+                  placeholder="City"
+                  formControlName="city"
+                  [ngClass]="{
+                    invalid: city?.invalid && city?.touched && city?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="city?.invalid && city?.touched && city?.dirty"
+                  class="error-message"
+                >
+                  Required field
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="emailInput">Email *</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="emailInput"
+                  placeholder="Email"
+                  formControlName="email"
+                  [ngClass]="{
+                    invalid: email?.invalid && email?.touched && email?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="
+                    email?.invalid &&
+                    email?.touched &&
+                    email?.dirty &&
+                    !email?.value
+                  "
+                  class="error-message"
+                >
+                  Required field
+                </p>
+                <p
+                  *ngIf="
+                email?.invalid &&
+                email?.touched &&
+                email?.dirty &&
+                email?.errors?.['email']
+              "
+                  class="error-message"
+                >
+                  Invalid email
+                </p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="phoneInput">Phone Number *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phoneInput"
+                  placeholder="Phone Number"
+                  formControlName="phoneNumber"
+                  [ngClass]="{
+                    invalid:
+                      phoneNumber?.invalid &&
+                      phoneNumber?.touched &&
+                      phoneNumber?.dirty
+                  }"
+                />
+                <p
+                  *ngIf="
+                    phoneNumber?.invalid &&
+                    phoneNumber?.touched &&
+                    phoneNumber?.dirty
+                  "
+                  class="error-message"
+                >
+                  Required field
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="bookingForm.invalid"
+            *ngIf="!isLoading"
+            class="btn btn-primary book-now-btn"
           >
-            Required field
-          </p>
-        </div>
-        <div class="form-group">
-          <label for="firstNameInput">First Name *</label>
-          <input
-            type="text"
-            class="form-control"
-            id="firstNameInput"
-            aria-describedby="emailHelp"
-            placeholder="First Name"
-            formControlName="firstName"
-            [ngClass]="{
-              invalid:
-                firstName?.invalid && firstName?.touched && firstName?.dirty
-            }"
-          />
-          <p
-            *ngIf="firstName?.invalid && firstName?.touched && firstName?.dirty"
-            class="error-message"
+            Book Now
+          </button>
+          <button
+            *ngIf="isLoading"
+            class="btn btn-primary book-now-btn"
+            type="button"
+            disabled
           >
-            Required field
-          </p>
-        </div>
-        <div class="form-group">
-          <label for="lastNameInput">Last Name *</label>
-          <input
-            type="text"
-            class="form-control"
-            id="lastNameInput"
-            aria-describedby="emailHelp"
-            placeholder="Last Name"
-            formControlName="lastName"
-            [ngClass]="{
-              invalid: lastName?.invalid && lastName?.touched && lastName?.dirty
-            }"
-          />
-          <p
-            *ngIf="lastName?.invalid && lastName?.touched && lastName?.dirty"
-            class="error-message"
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Book Now...
+          </button>
+        </form>
+        <div>
+          <ngb-toast
+            *ngIf="successMessage"
+            (hide)="successMessage = ''"
+            [delay]="3000"
+            [animation]="true"
+            [autohide]="true"
+            class="mt-1 success-toast text-light"
           >
-            Required field
-          </p>
-        </div>
-        <div class="form-group">
-          <label for="addressInput">Billing Address *</label>
-          <input
-            type="text"
-            class="form-control"
-            id="addressInput"
-            aria-describedby="emailHelp"
-            placeholder="Billing Address"
-            formControlName="address"
-            [ngClass]="{
-              invalid: address?.invalid && address?.touched && address?.dirty
-            }"
-          />
-          <p
-            *ngIf="address?.invalid && address?.touched && address?.dirty"
-            class="error-message"
-          >
-            Required field
-          </p>
-        </div>
-        <div class="form-group">
-          <label for="countryInput">Country *</label>
-          <select
-            class="form-select"
-            aria-label="Country *"
-            formControlName="countryCode"
-            (change)="changeCountry($event)"
-          >
-            <option value="" disabled>Select Country</option>
-            <option *ngFor="let country of countries" [value]="country.code">
-              {{ country.name }}
-            </option>
-          </select>
+            {{ successMessage }}
+          </ngb-toast>
         </div>
 
-        <div class="form-group">
-          <label for="postalInput">Postal Code *</label>
-          <input
-            type="text"
-            class="form-control"
-            id="postalInput"
-            aria-describedby="emailHelp"
-            placeholder="Postal Code"
-            formControlName="postalCode"
-            [ngClass]="{
-              invalid:
-                postalCode?.invalid && postalCode?.touched && postalCode?.dirty
-            }"
-          />
-          <p
-            *ngIf="
-              postalCode?.invalid && postalCode?.touched && postalCode?.dirty
-            "
-            class="error-message"
+        <div>
+          <ngb-toast
+            *ngIf="errorMessage"
+            (hide)="errorMessage = ''"
+            [delay]="3000"
+            [animation]="true"
+            [autohide]="true"
+            class="mt-1 danger-toast text-light"
           >
-            Required field
-          </p>
+            {{ errorMessage }}
+          </ngb-toast>
         </div>
-
-        <div class="form-group">
-          <label for="cityInput">City *</label>
-          <input
-            type="text"
-            class="form-control"
-            id="cityInput"
-            aria-describedby="emailHelp"
-            placeholder="City"
-            formControlName="city"
-            [ngClass]="{
-              invalid: city?.invalid && city?.touched && city?.dirty
-            }"
-          />
-          <p
-            *ngIf="city?.invalid && city?.touched && city?.dirty"
-            class="error-message"
-          >
-            Required field
-          </p>
-        </div>
-
-        <div class="form-group">
-          <label for="emailInput">Email *</label>
-          <input
-            type="email"
-            class="form-control"
-            id="emailInput"
-            aria-describedby="emailHelp"
-            placeholder="Email"
-            formControlName="email"
-            [ngClass]="{
-              invalid: email?.invalid && email?.touched && email?.dirty
-            }"
-          />
-          <p
-            *ngIf="
-              email?.invalid && email?.touched && email?.dirty && !email?.value
-            "
-            class="error-message"
-          >
-            Required field
-          </p>
-          <p
-            *ngIf="
-              email?.invalid &&
-              email?.touched &&
-              email?.dirty &&
-              email?.errors?.['email']
-            "
-            class="error-message"
-          >
-            Invalid email
-          </p>
-        </div>
-
-        <div class="form-group">
-          <label for="phoneInput">Phone Number *</label>
-          <input
-            type="text"
-            class="form-control"
-            id="phoneInput"
-            aria-describedby="emailHelp"
-            placeholder="Phone Number"
-            formControlName="phoneNumber"
-            [ngClass]="{
-              invalid:
-                phoneNumber?.invalid &&
-                phoneNumber?.touched &&
-                phoneNumber?.dirty
-            }"
-          />
-          <p
-            *ngIf="
-              phoneNumber?.invalid && phoneNumber?.touched && phoneNumber?.dirty
-            "
-            class="error-message"
-          >
-            Required field
-          </p>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Book Now</button>
-        <!-- <button class="btn btn-primary" type="button" disabled>
-          <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          Loading...
-        </button> -->
-      </form>
+      </div>
     </div>
   </div>
 </div>

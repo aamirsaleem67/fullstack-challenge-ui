@@ -9,3 +9,40 @@
   font-weight: 400;
   margin-top: 4px;
 }
+
+.book-form {
+  .title {
+    border-bottom: 1px solid #9ea179;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+  background-color: #f7f1e9;
+  height: 110vh;
+  padding: 60px 40px;
+  .form-control {
+    height: 65px;
+    background: transparent;
+    border: 1px solid #747d85;
+    border-radius: 0;
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  .book-now-btn {
+    background: #9ea179;
+    border: none;
+    color: #f7f1e9;
+    padding: 15px 45px;
+    font-size: 20px;
+    border-radius: 0;
+  }
+}
+
+.danger-toast {
+  background-color: #ea414d;
+}
+
+.success-toast {
+  background-color: #9ea179;
+}
