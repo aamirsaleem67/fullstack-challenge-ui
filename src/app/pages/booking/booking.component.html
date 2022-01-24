@@ -4,103 +4,184 @@
       <form [formGroup]="bookingForm">
         <app-datepicker-range></app-datepicker-range>
         <div class="form-group">
-          <label for="firstNameInput">First Name</label>
+          <label for="firstNameInput">First Name *</label>
           <input
             type="text"
             class="form-control"
             id="firstNameInput"
             aria-describedby="emailHelp"
-            placeholder="Enter first name"
+            placeholder="First Name"
             formControlName="firstName"
-            [ngClass]="{ invalid: firstName?.invalid && firstName?.touched }"
+            [ngClass]="{
+              invalid:
+                firstName?.invalid && firstName?.touched && firstName?.dirty
+            }"
           />
+          <p
+            *ngIf="firstName?.invalid && firstName?.touched && firstName?.dirty"
+            class="error-message"
+          >
+            Required field
+          </p>
         </div>
         <div class="form-group">
-          <label for="lastNameInput">Last Name</label>
+          <label for="lastNameInput">Last Name *</label>
           <input
             type="text"
             class="form-control"
             id="lastNameInput"
             aria-describedby="emailHelp"
-            placeholder="Enter last name"
+            placeholder="Last Name"
             formControlName="lastName"
-            [ngClass]="{ invalid: lastName?.invalid && lastName?.touched }"
+            [ngClass]="{
+              invalid: lastName?.invalid && lastName?.touched && lastName?.dirty
+            }"
           />
+          <p
+            *ngIf="lastName?.invalid && lastName?.touched && lastName?.dirty"
+            class="error-message"
+          >
+            Required field
+          </p>
         </div>
         <div class="form-group">
-          <label for="addressInput">Billing Address</label>
+          <label for="addressInput">Billing Address *</label>
           <input
             type="text"
             class="form-control"
             id="addressInput"
             aria-describedby="emailHelp"
-            placeholder="Enter address"
+            placeholder="Billing Address"
             formControlName="address"
-            [ngClass]="{ invalid: address?.invalid && address?.touched }"
+            [ngClass]="{
+              invalid: address?.invalid && address?.touched && address?.dirty
+            }"
           />
+          <p
+            *ngIf="address?.invalid && address?.touched && address?.dirty"
+            class="error-message"
+          >
+            Required field
+          </p>
         </div>
         <div class="form-group">
-          <label for="countryInput">Country</label>
-          <input
-            [ngClass]="{ invalid: country?.invalid && country?.touched }"
-            type="text"
-            class="form-control"
-            id="countryInput"
-            aria-describedby="emailHelp"
-            placeholder="Enter country"
-            formControlName="country"
-          />
+          <label for="countryInput">Country *</label>
+          <select
+            class="form-select"
+            aria-label="Country *"
+            formControlName="countryCode"
+            (change)="changeCountry($event)"
+          >
+            <option value="" disabled>Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.code">
+              {{ country.name }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label for="postalInput">Postal Code</label>
+          <label for="postalInput">Postal Code *</label>
           <input
             type="text"
             class="form-control"
             id="postalInput"
             aria-describedby="emailHelp"
-            placeholder="Enter postal code"
+            placeholder="Postal Code"
             formControlName="postalCode"
-            [ngClass]="{ invalid: postalCode?.invalid && postalCode?.touched }"
+            [ngClass]="{
+              invalid:
+                postalCode?.invalid && postalCode?.touched && postalCode?.dirty
+            }"
           />
+          <p
+            *ngIf="
+              postalCode?.invalid && postalCode?.touched && postalCode?.dirty
+            "
+            class="error-message"
+          >
+            Required field
+          </p>
         </div>
 
         <div class="form-group">
-          <label for="cityInput">City</label>
+          <label for="cityInput">City *</label>
           <input
             type="text"
             class="form-control"
             id="cityInput"
             aria-describedby="emailHelp"
-            placeholder="Enter city"
+            placeholder="City"
             formControlName="city"
-            [ngClass]="{ invalid: city?.invalid && city?.touched }"
+            [ngClass]="{
+              invalid: city?.invalid && city?.touched && city?.dirty
+            }"
           />
+          <p
+            *ngIf="city?.invalid && city?.touched && city?.dirty"
+            class="error-message"
+          >
+            Required field
+          </p>
         </div>
 
         <div class="form-group">
-          <label for="emailInput">Email</label>
+          <label for="emailInput">Email *</label>
           <input
             type="email"
             class="form-control"
             id="emailInput"
             aria-describedby="emailHelp"
-            placeholder="Enter email"
+            placeholder="Email"
             formControlName="email"
-            [ngClass]="{ invalid: email?.invalid && email?.touched }"
+            [ngClass]="{
+              invalid: email?.invalid && email?.touched && email?.dirty
+            }"
           />
+          <p
+            *ngIf="
+              email?.invalid && email?.touched && email?.dirty && !email?.value
+            "
+            class="error-message"
+          >
+            Required field
+          </p>
+          <p
+            *ngIf="
+              email?.invalid &&
+              email?.touched &&
+              email?.dirty &&
+              email?.errors?.['email']
+            "
+            class="error-message"
+          >
+            Invalid email
+          </p>
         </div>
 
         <div class="form-group">
-          <label for="phoneInput">Phone Number</label>
+          <label for="phoneInput">Phone Number *</label>
           <input
             type="text"
             class="form-control"
             id="phoneInput"
             aria-describedby="emailHelp"
-            placeholder="Enter Phone"
-            formControlName="phone"
+            placeholder="Phone Number"
+            formControlName="phoneNumber"
+            [ngClass]="{
+              invalid:
+                phoneNumber?.invalid &&
+                phoneNumber?.touched &&
+                phoneNumber?.dirty
+            }"
           />
+          <p
+            *ngIf="
+              phoneNumber?.invalid && phoneNumber?.touched && phoneNumber?.dirty
+            "
+            class="error-message"
+          >
+            Required field
+          </p>
         </div>
 
         <button type="submit" class="btn btn-primary">Book Now</button>

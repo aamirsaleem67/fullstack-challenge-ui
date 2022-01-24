@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { countriesWithAlphaCode } from 'src/shared/constants/countries-with-alpha-code';
+import { CountriesWithAlphaCode } from 'src/shared/interfaces/countries-with-alpha-code.interface';
 
 @Component({
   selector: 'app-booking',
@@ -7,18 +9,24 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent implements OnInit {
+  countries: CountriesWithAlphaCode[] = countriesWithAlphaCode;
+
   bookingForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     address: ['', Validators.required],
-    country: ['', Validators.required],
+    countryCode: ['', Validators.required],
     postalCode: ['', Validators.required],
     city: ['', Validators.required],
-    email: ['', Validators.required, Validators.email],
+    email: ['', [Validators.required, Validators.email]],
     phoneNumber: ['', Validators.required],
+    arrival: [null, Validators.required],
+    departure: [null, Validators.required],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    console.log(this.countries[0]);
+  }
 
   ngOnInit(): void {}
 
@@ -31,8 +39,8 @@ export class BookingComponent implements OnInit {
   get address() {
     return this.bookingForm.get('address');
   }
-  get country() {
-    return this.bookingForm.get('country');
+  get countryCode() {
+    return this.bookingForm.get('countryCode');
   }
   get postalCode() {
     return this.bookingForm.get('postalCode');
@@ -43,5 +51,17 @@ export class BookingComponent implements OnInit {
 
   get email() {
     return this.bookingForm.get('email');
+  }
+
+  get phoneNumber() {
+    return this.bookingForm.get('phoneNumber');
+  }
+
+  changeCountry(e: any) {
+    console.log('target', e.target.value);
+    this.countryCode?.setValue(e.target.value, {
+      onlySelf: true,
+    });
+    console.log(this.countryCode?.value);
   }
 }

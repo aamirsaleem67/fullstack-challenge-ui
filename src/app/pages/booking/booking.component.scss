@@ -1,3 +1,11 @@
 .invalid {
-  border-color: red;
+  border: 1px solid #ea414d;
+}
+.error-message {
+  align-items: center;
+  color: #ea414d;
+  display: flex;
+  font-size: 0.75em;
+  font-weight: 400;
+  margin-top: 4px;
 }
