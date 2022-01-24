@@ -24,6 +24,7 @@
                   id="guestsInput"
                   placeholder="Guests"
                   formControlName="adults"
+                  (keydown)="(false)"
                   [ngClass]="{
                     invalid: adults?.invalid && adults?.touched && adults?.dirty
                   }"
