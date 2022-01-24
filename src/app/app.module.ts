@@ -8,7 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { BookingComponent } from './pages/booking/booking.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerRangeComponent } from './components/datepicker-range/datepicker-range.component';
-
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,6 +22,7 @@ import { DatepickerRangeComponent } from './components/datepicker-range/datepick
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

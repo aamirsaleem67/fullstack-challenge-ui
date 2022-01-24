@@ -1,4 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -29,31 +30,44 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
   ],
 })
 export class DatepickerRangeComponent {
+  @Input() parentForm!: FormGroup;
   @ViewChild('dp') dp!: NgbDateStruct;
   model!: NgbDateStruct;
 
   hoveredDate: NgbDate | null = null;
 
-  fromDate: NgbDate;
-  toDate: NgbDate | null = null;
+  fromDate!: NgbDate;
+  toDate!: NgbDate | null;
   minDate: NgbDate;
   maxDate: NgbDate;
   constructor(calendar: NgbCalendar) {
     this.minDate = calendar.getToday();
     this.maxDate = calendar.getNext(calendar.getToday(), 'y');
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    // this.fromDate = calendar.getToday();
   }
 
   onDateSelection(date: NgbDate, datepicker: any) {
+    console.log('BEFORE', this.fromDate, this.toDate);
+
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
+      this.parentForm.patchValue({
+        arrival: date,
+      });
     } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
+      this.parentForm.patchValue({
+        departure: date,
+      });
     } else {
       this.toDate = null;
       this.fromDate = date;
+      this.parentForm.patchValue({
+        departure: null,
+        arrival: date,
+      });
     }
+    console.log('after', this.fromDate, this.toDate);
 
     if (this.fromDate && this.toDate) {
       datepicker.close();
